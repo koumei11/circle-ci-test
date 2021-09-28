@@ -14,17 +14,20 @@ commands:
       - run: echo << parameters.to >>
 defaults: &defaults
   docker:
-    - image: cimg/base:stable
+    - image: circleci/node:13.8.0
 jobs:
-  use_commands:
+  fail_job:
     <<: *defaults
     steps:
       - checkout
-      - print_pipeline_id:
-          to: << pipeline.id >>
+      - run: return 1
+      - run:
+          name: Print hello error when falied
+          command: echo "hello error"
+          when: on_fail
 # Invoke jobs via workflows!
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   workspace-test-workflow:
     jobs:
-      - use_commands
+      - fail_job
