@@ -13,7 +13,7 @@ jobs:
           name: "Create output.txt file"
           command: echo "text to output file" > output.txt
       - persist_to_workspace:
-          root: /tmp/dir
+          root: /tmp
           paths:
             - target/output.txt
   print_output_file:
@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/dir
+          at: /tmp
       - run:
           name: "Display output.txt file"
           command: cat target/output.txt
