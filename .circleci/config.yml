@@ -20,7 +20,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: return 1
+      - run: echo HEllo
       - run:
           name: Print hello error when falied
           command: echo "hello error"
