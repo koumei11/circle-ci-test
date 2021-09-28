@@ -11,21 +11,21 @@ jobs:
       - checkout
       - run:
           name: "Create output.txt file"
-          command: echo "text to output file" > output.txt
+          command: echo "text to output file" > /tmp/dir/output.txt
       - persist_to_workspace:
-          root: /tmp
+          root: /tmp/dir
           paths:
-            - target/output.txt
+            - output.txt
   print_output_file:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp
+          at: /tmp/dir
       - run:
           name: "Display output.txt file"
-          command: cat /tmp/target/output.txt
+          command: cat /tmp/dir/output.txt
 # Invoke jobs via workflows!
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
