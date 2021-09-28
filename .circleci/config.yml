@@ -11,9 +11,9 @@ jobs:
       - checkout
       - run:
           name: "Create output.txt file"
-          command: echo "text to output file" > /tmp/dir/output.txt
+          command: echo "text to output file" > /tmp/output.txt
       - persist_to_workspace:
-          root: /tmp/dir
+          root: /tmp
           paths:
             - output.txt
   print_output_file:
@@ -22,10 +22,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/dir
+          at: /tmp
       - run:
           name: "Display output.txt file"
-          command: cat /tmp/dir/output.txt
+          command: cat /tmp/output.txt
 # Invoke jobs via workflows!
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
