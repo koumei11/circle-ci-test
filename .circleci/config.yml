@@ -3,29 +3,25 @@
 version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
+commands:
+  print_pipeline_id:
+    description: "Print pipeline id"
+    parameters:
+      to:
+        type: string
+        default: "12345"
+    steps:
+      - run: echo << parameters.to >>
+defaults: &defaults
+  docker:
+    - image: cimg/base:stable
 jobs:
-  save_hello_world_output:
-    docker:
-      - image: cimg/base:stable
+  use_commands:
+    <<: *defaults
     steps:
       - checkout
-      - run:
-          name: "Create output.txt file"
-          command: echo "text to output file" > /tmp/output.txt
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - output.txt
-  print_output_file:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - attach_workspace:
-          at: /tmp
-      - run:
-          name: "Display output.txt file"
-          command: cat /tmp/output.txt
+      - print_pipeline_id:
+          to: << pipeline.id >>
 # Invoke jobs via workflows!
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
