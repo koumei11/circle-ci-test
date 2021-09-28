@@ -3,31 +3,19 @@
 version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
-commands:
-  print_pipeline_id:
-    description: "Print pipeline id"
-    parameters:
-      to:
-        type: string
-        default: "12345"
-    steps:
-      - run: echo << parameters.to >>
-defaults: &defaults
-  docker:
-    - image: circleci/node:13.8.0
 jobs:
-  fail_job:
-    <<: *defaults
+  create_infrastructure:
+    docker:
+      - image: amazon/aws-cli
     steps:
       - checkout
-      - run: echo HEllo
       - run:
-          name: Print hello error when falied
-          command: echo "hello error"
-          when: on_fail
-# Invoke jobs via workflows!
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+          name: Ensure backend infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file template.yml \
+              --stack-name my-stack
 workflows:
-  workspace-test-workflow:
+  infra-workflow:
     jobs:
-      - fail_job
+      - create_infrastructure
