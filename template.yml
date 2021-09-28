@@ -7,7 +7,7 @@ EC2Instance:
  Properties:
    SecurityGroups:
      - !Ref InstanceSecurityGroup
-   KeyName: AWS_Keypair_ND9991
+   KeyName: udacity
    ImageId: 'ami-0df99b3a8349462c6' # you may need to find out what instance types are available in your region - use https://cloud-images.ubuntu.com/locator/ec2/
    InstanceType: t3.micro
 InstanceSecurityGroup:
