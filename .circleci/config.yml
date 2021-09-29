@@ -32,8 +32,28 @@ jobs:
           command: |
             ansible-playbook -i inventory playbook.yml
 
+smoke_test:
+  docker:
+    - image: alpine:latest
+  steps:
+    - checkout
+    - run: apk add --update curl
+    - run:
+        name: Smoke Test
+        command: |
+          URL="3.112.195.55"
+          if curl -s --head ${URL}
+          then
+            return 0
+          else
+            return 1
+          fi
+
 workflows:
   infra-workflow:
     jobs:
       - execute_ansible
+      - smoke_test:
+          requires:
+            - execute_ansible
       
